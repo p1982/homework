@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Считать два числа, `m` и `n`. Вывести в консоль все простые числа
+        //(http://ru.math.wikia.com/wiki/%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B5_%D1%87%D0%B8%D1%81%D0%BB%D0%BE)
+        // в диапазоне от `m` до `n` (меньшее из введенных чисел будет `m`, бОльшее будет `n`).
+        // Если хотя бы одно из чисел не соблюдает условие валидации, указанное выше, вывести сообщение об ошибке,
+        // и спросить оба числа заново.
+
+        let m = +prompt('enter min number');
+        let n = +prompt('enter max number');
+
+        while (isNaN(n)
+            || n === ''
+            || isNaN(m)
+            || m === ''){
+            m = +prompt('enter min number');
+            n = +prompt('enter min number');
+        }
+
+        for(let i=m; i<=n; i++){
+            for(let j=2; j<i; j++){
+                if(i%j===0){
+                    break
+                } else if(j===i-1){
+                    console.log('number' + i + 'is prime')
+                }
+            }
+        }
+
+        </script>
+</body>
+</html>

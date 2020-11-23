@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let num = +prompt('enter number');
+        let result = 1;
+
+        // loops
+        while (isNaN(num) || num === ''){
+            alert('not number');
+            num = +prompt('enter number');
+        }
+        // while(num>1){
+        //     result *= num--;
+        // }
+        // console.log(result)
+
+        // function
+        function calcFactorial(number){
+            if(number <= 1){
+                return 1
+            } else{
+                return number * calcFactorial(number - 1);
+            }
+        }
+
+        console.log(calcFactorial(num));
+
+    </script>
+</body>
+</html>

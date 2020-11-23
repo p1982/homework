@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Реализовать функцию фильтра массива по указанному типу данных. Задача должна быть реализована на языке
+        // javascript, без использования фреймворков и сторонник библиотек (типа Jquery).
+        //
+        // #### Технические требования:
+        //     - Написать функцию `filterBy()`, которая будет принимать в себя 2 аргумента. Первый аргумент - массив,
+        //     который будет содержать в себе любые данные, второй аргумент - тип данных.
+        // - Функция должна вернуть новый массив, который будет содержать в себе все данные, которые были переданы в
+        // аргумент, за исключением тех, тип которых был передан вторым аргументом. То есть, если передать массив
+        //     ['hello', 'world', 23, '23', null], и вторым аргументом передать 'string',
+        //     то функция вернет массив [23, null].
+
+        // const arr = ['hello', 'world', 23, '23', null];
+        //
+        // function filterBy (arr, type){
+        //     const newArr = []
+        //     for (let item of arr){
+        //         if (typeof item !== type){
+        //             newArr.push(item)
+        //         }
+        //     }
+        //      return newArr
+        // }
+        // const filtered = filterBy(arr, 'string')
+        // console.log(filtered)
+
+        const arr = ['hello', 'world', 23, '23', null];
+        function filterBy (arr, type){
+           return arr.filter((item) => typeof item !== type)
+        }
+        const newArr = filterBy(arr, 'string')
+        console.log(newArr)
+
+    </script>
+</body>
+</html>

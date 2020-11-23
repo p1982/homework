@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let AGE_FOR_VISIT = 18;
+        let name;
+        let age;
+
+        do {
+            name = prompt('What is your name?', name);
+            age = prompt('How old are you?', age);
+        } while (name === '' && age === '' || isNaN(age))
+
+        if (AGE_FOR_VISIT > age){
+            alert('You are not allowed to visit this website');
+        } else if (age >= AGE_FOR_VISIT && age<=22){
+            if (confirm("Are you sure you want to continue?")) {
+                alert(`Welcome ${name}`);
+            } else {
+                alert("You are not allowed to visit this website");
+            }
+        } else {
+            alert(`Welcome, ${name}`)
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Слайдер для сайта на CSS и JavaScript</title>
+    <style>
+        .slider {
+            position: relative;
+            overflow: hidden;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider-items {
+            display: flex;
+            transition: transform 0.6s ease;
+        }
+
+        .slider-item {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .slider-control {
+            position: absolute;
+            top: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            color: #fff;
+            text-align: center;
+            opacity: 0.5;
+            height: 50px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .slider-control-show {
+            display: flex;
+        }
+
+        .slider-control:hover,
+        .slider-control:focus {
+            color: #fff;
+            text-decoration: none;
+            outline: 0;
+            opacity: 0.9;
+        }
+
+        .slider-control-prev {
+            left: 0;
+        }
+
+        .slider-control-next {
+            right: 0;
+        }
+
+        .slider-control::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: transparent no-repeat center center;
+            background-size: 100% 100%;
+        }
+
+        .slider-control-prev::before {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+        }
+
+        .slider-control-next::before {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+        }
+
+        .slider-indicators {
+            position: absolute;
+            right: 0;
+            bottom: 10px;
+            left: 0;
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+            padding-left: 0;
+            margin-right: 15%;
+            margin-left: 15%;
+            list-style: none;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .slider-indicators li {
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 4px;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.5);
+            background-clip: padding-box;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+        }
+
+        .slider-indicators li.active {
+            background-color: #fff;
+        }
+
+        .slider-img {
+            height: 250px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="slider">
+    <div class="slider-wrapper">
+        <div class="slider-items">
+            <div class="slider-item">
+                <img class="slider-img" src="img/1.jpg" alt="img">
+            </div>
+            <div class="slider-item">
+                <img class="slider-img" src="img/2.jpg" alt="img">
+            </div>
+            <div class="slider-item">
+                <img class="slider-img" src="img/3.JPG" alt="img">
+            </div>
+            <div class="slider-item">
+                <img class="slider-img" src="img/4.jpg" alt="img">
+            </div>
+            <div class="slider-item">
+                <img class="slider-img" src="img/5.png" alt="img">
+            </div>
+            <div class="slider-item">
+                <img class="slider-img" src="img/6.jpg" alt="img">
+            </div>
+        </div>
+    </div>
+    <a class="slider-control slider-control-prev" href="#" role="button"></a>
+    <a class="slider-control slider-control-next" href="#" role="button"></a>
+</div>
+
+<script>
+    const slideShow = (function () {
+        return function (selector, config) {
+            let _slider = document.querySelector(selector); // основный элемент блока
+            let _sliderContainer = _slider.querySelector('.slider-items'); // контейнер для .slider-item
+            let _sliderItems = _slider.querySelectorAll('.slider-item'); // коллекция .slider-item
+            let _sliderControls = _slider.querySelectorAll('.slider-control'); // элементы управления
+            let _currentPosition = 0; // позиция левого активного элемента
+            let _transformValue = 0; // значение транфсофрмации .slider_wrapper
+            let _transformStep = 100; // величина шага (для трансформации)
+            let _itemsArray = []; // массив элементов
+            let _timerId;
+            let _indicatorItems;
+            let _indicatorIndex = 0;
+            let _indicatorIndexMax = _sliderItems.length - 1;
+            let _stepTouch = 50;
+            let _config = {
+                isAutoplay: false, // автоматическая смена слайдов
+                directionAutoplay: 'next', // направление смены слайдов
+                delayAutoplay: 3000, // интервал между автоматической сменой слайдов
+                isPauseOnHover: true // устанавливать ли паузу при поднесении курсора к слайдеру
+            };
+
+// настройка конфигурации слайдера в зависимости от полученных ключей
+            for (let key in config) {
+                if (key in _config) {
+                    _config[key] = config[key];
+                }
+            }
+
+// наполнение массива _itemsArray
+            for (let i = 0, length = _sliderItems.length; i < length; i++) {
+                _itemsArray.push({item: _sliderItems[i], position: i, transform: 0});
+            }
+
+// переменная position содержит методы с помощью которой можно получить минимальный и максимальный индекс элемента, а также соответствующему этому индексу позицию
+            let position = {
+                getItemIndex: function (mode) {
+                    let index = 0;
+                    for (let i = 0, length = _itemsArray.length; i < length; i++) {
+                        if ((_itemsArray[i].position < _itemsArray[index].position && mode === 'min') || (_itemsArray[i].position > _itemsArray[index].position && mode === 'max')) {
+                            index = i;
+                        }
+                    }
+                    return index;
+                },
+                getItemPosition: function (mode) {
+                    return _itemsArray[position.getItemIndex(mode)].position;
+                }
+            };
+
+// функция, выполняющая смену слайда в указанном направлении
+            let _move = function (direction) {
+                let nextItem, currentIndicator = _indicatorIndex;
+
+                if (direction === 'next') {
+                    _currentPosition++;
+                    if (_currentPosition > position.getItemPosition('max')) {
+                        nextItem = position.getItemIndex('min');
+                        _itemsArray[nextItem].position = position.getItemPosition('max') + 1;
+                        _itemsArray[nextItem].transform += _itemsArray.length * 100;
+                        _itemsArray[nextItem].item.style.transform = 'translateX(' + _itemsArray[nextItem].transform + '%)';
+                    }
+                    _transformValue -= _transformStep;
+                    _indicatorIndex = _indicatorIndex + 1;
+                    if (_indicatorIndex > _indicatorIndexMax) {
+                        _indicatorIndex = 0;
+                    }
+                } else {
+                    _currentPosition--;
+                    if (_currentPosition < position.getItemPosition('min')) {
+                        nextItem = position.getItemIndex('max');
+                        _itemsArray[nextItem].position = position.getItemPosition('min') - 1;
+                        _itemsArray[nextItem].transform -= _itemsArray.length * 100;
+                        _itemsArray[nextItem].item.style.transform = 'translateX(' + _itemsArray[nextItem].transform + '%)';
+                    }
+                    _transformValue += _transformStep;
+                    _indicatorIndex = _indicatorIndex - 1;
+                    if (_indicatorIndex < 0) {
+                        _indicatorIndex = _indicatorIndexMax;
+                    }
+                }
+                _sliderContainer.style.transform = 'translateX(' + _transformValue + '%)';
+                _indicatorItems[currentIndicator].classList.remove('active');
+                _indicatorItems[_indicatorIndex].classList.add('active');
+            };
+
+// функция, осуществляющая переход к слайду по его порядковому номеру
+            let _moveTo = function (index) {
+                let i = 0, direction = (index > _indicatorIndex) ? 'next' : 'prev';
+                while (index !== _indicatorIndex && i <= _indicatorIndexMax) {
+                    _move(direction);
+                    i++;
+                }
+            };
+
+// функция для запуска автоматической смены слайдов через промежутки времени
+            let _startAutoplay = function () {
+                if (!_config.isAutoplay) {
+                    return;
+                }
+                _stopAutoplay();
+                _timerId = setInterval(function () {
+                    _move(_config.directionAutoplay);
+                }, _config.delayAutoplay);
+            };
+
+// функция, отключающая автоматическую смену слайдов
+            let _stopAutoplay = function () {
+                clearInterval(_timerId);
+            };
+
+// функция, добавляющая индикаторы к слайдеру
+            let _addIndicators = function () {
+                const indicatorsContainer = document.createElement('ol');
+                indicatorsContainer.classList.add('slider-indicators');
+                for (let i = 0, length = _sliderItems.length; i < length; i++) {
+                    const sliderIndicatorsItem = document.createElement('li');
+                    if (i === 0) {
+                        sliderIndicatorsItem.classList.add('active');
+                    }
+                    sliderIndicatorsItem.setAttribute("data-slide-to", i);
+                    indicatorsContainer.appendChild(sliderIndicatorsItem);
+                }
+                _slider.appendChild(indicatorsContainer);
+                _indicatorItems = _slider.querySelectorAll('.slider-indicators > li')
+            };
+
+            let _isTouchDevice = function () {
+                return !!('ontouchstart' in window || navigator.maxTouchPoints);
+            };
+
+// функция, осуществляющая установку обработчиков для событий
+            let _setUpListeners = function () {
+                let _startX = 0;
+                if (_isTouchDevice()) {
+                    _slider.addEventListener('touchstart', function (e) {
+                        _startX = e.changedTouches[0].clientX;
+                        _startAutoplay();
+                    });
+                    _slider.addEventListener('touchend', function (e) {
+                        let
+                            _endX = e.changedTouches[0].clientX,
+                            _deltaX = _endX - _startX;
+                        if (_deltaX > _stepTouch) {
+                            _move('prev');
+                        } else if (_deltaX < -_stepTouch) {
+                            _move('next');
+                        }
+                        _startAutoplay();
+                    });
+                } else {
+                    for (let i = 0, length = _sliderControls.length; i < length; i++) {
+                        _sliderControls[i].classList.add('slider-control-show');
+                    }
+                }
+                _slider.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('slider-control')) {
+                        e.preventDefault();
+                        _move(e.target.classList.contains('slider-control-next') ? 'next' : 'prev');
+                        _startAutoplay();
+                    } else if (e.target.getAttribute('data-slide-to')) {
+                        e.preventDefault();
+                        _moveTo(parseInt(e.target.getAttribute('data-slide-to')));
+                        _startAutoplay();
+                    }
+                });
+                document.addEventListener('visibilitychange', function () {
+                    if (document.visibilityState === "hidden") {
+                        _stopAutoplay();
+                    } else {
+                        _startAutoplay();
+                    }
+                }, false);
+                if (_config.isPauseOnHover && _config.isAutoplay) {
+                    _slider.addEventListener('mouseenter', function () {
+                        _stopAutoplay();
+                    });
+                    _slider.addEventListener('mouseleave', function () {
+                        _startAutoplay();
+                    });
+                }
+            };
+
+// добавляем индикаторы к слайдеру
+            _addIndicators();
+// установливаем обработчики для событий
+            _setUpListeners();
+// запускаем автоматическую смену слайдов, если установлен соответствующий ключ
+            _startAutoplay();
+
+            return {
+// метод слайдера для перехода к следующему слайду
+                next: function () {
+                    _move('next');
+                },
+// метод слайдера для перехода к предыдущему слайду
+                left: function () {
+                    _move('prev');
+                },
+// метод отключающий автоматическую смену слайдов
+                stop: function () {
+                    _config.isAutoplay = false;
+                    _stopAutoplay();
+                },
+// метод запускающий автоматическую смену слайдов
+                cycle: function () {
+                    _config.isAutoplay = true;
+                    _startAutoplay();
+                }
+            }
+        }
+    }());
+
+    slideShow('.slider', {
+        isAutoplay: true
+    });
+</script>
+</body>
+</html>

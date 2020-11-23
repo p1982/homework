@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+            crossorigin="anonymous"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Homework-buttons</title>
+    <style>
+        .password-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .red-text{
+            color: red;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 200px;
+        }
+
+        .input-wrapper input {
+            min-width: 120px;
+            padding: 10px;
+            margin-bottom: 24px;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 25px;
+            top: 30px;
+            color: grey;
+        }
+
+        .btn{
+            width: 150px;
+        }
+
+        .hidden{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<form class="password-form" action="#" type="POST">
+    <label class="input-wrapper">
+        Ввести пароль
+        <input type="password" id="input-password"/>
+        <i class="fas fa-eye icon-password" id="password"></i>
+         <i class="fas fa-eye-slash icon-password hidden" id="password-hidden"></i>
+    </label>
+    <label class="input-wrapper">
+        Подтвердить пароль
+        <input type="password" id="input-confirm-password"/>
+        <i class="fas fa-eye icon-password" id="confirm-password"></i>
+         <i class="fas fa-eye-slash icon-password hidden" id="confirm-password-hidden"></i>
+    </label>
+    <button type="submit" class="btn" id="button-confirm">Подтвердить</button>
+</form>
+<script>
+    // Написать реализацию кнопки "Показать пароль". Задача должна быть реализована на языке javascript,
+    // без использования фреймворков и сторонник библиотек (типа Jquery).
+    //
+    // #### Технические требования:
+    // - В файле `index.html` лежит разметка для двух полей ввода пароля.
+    // - По нажатию на иконку рядом с конкретным полем - должны отображаться символы, которые ввел пользователь,
+    // иконка меняет свой внешний вид. В комментариях под иконкой - иконка другая, именно она должна отображаться
+    // вместо текущей.
+    // - Когда пароля не видно - иконка поля должна выглядеть, как та, что в первом поле (Ввести пароль)
+    // - Когда нажата иконка, она должна выглядеть, как та, что во втором поле (Ввести пароль)
+    // - По нажатию на кнопку Подтвердить, нужно сравнить введенные значения в полях
+    // - Если значения совпадают - вывести модальное окно (можно alert) с текстом - `You are welcome`;
+    // - Если значение не совпадают - вывести под вторым полем текст красного цвета  `Нужно ввести одинаковые значения`
+    // - После нажатия на кнопку страница не должна перезагружаться
+    // - Можно менять разметку, добавлять атрибуты, теги, id, классы и так далее.
+    // получить иконки инпуты - +
+    // получить инпуты - +
+    // получить в переменную кнопку форму +
+    // повесить на форму обработчик события и превент дефолт внутри обработчика события
+    // повесить обработчик события клик на каждую иконку. +
+    // делать проверку если тип = пароль то меняем на текст (сет атрибут меняем) +
+    // меняем вид кнопки - удаляем класс и добавляем новый (или менять саму иконку через хиден)
+    // если тип текст то меняем на пароль и меняем иконку на глазик +
+    // отдельная функция сравнием инпут валуе 1 и иннпут валуе2 при нажатии на кнопку +
+    // если совпадает выводим алерт +
+    // если не совпадает создать спан с текстом +
+    // вставить на страницу спан с текстом +
+
+    const iconPassword = document.getElementById('password');
+    const iconConfirmPassword = document.getElementById('confirm-password');
+    const inputPassword = document.getElementById('input-password');
+    const inputConfirmPassword = document.getElementById('input-confirm-password');
+    const confirmButton = document.getElementById('button-confirm');
+    const iconPasswordHidden = document.getElementById('password-hidden');
+    const iconConfirmPasswordHidden = document.getElementById('confirm-password-hidden');
+    iconPassword.addEventListener('click', showPassword);
+    iconPasswordHidden.addEventListener('click', showPassword);
+    iconConfirmPassword.addEventListener('click', showConfirmPassword);
+    iconConfirmPasswordHidden.addEventListener('click', showConfirmPassword);
+    confirmButton.addEventListener('click', compaireValue)
+
+    function showPassword (){
+        if (inputPassword.getAttribute('type') === 'password'){
+            inputPassword.setAttribute('type', 'text');
+            iconPassword.classList.add('hidden');
+            iconPasswordHidden.classList.remove('hidden')
+        } else {
+            inputPassword.setAttribute('type', 'password');
+            iconPassword.classList.remove('hidden');
+            iconPasswordHidden.classList.add('hidden')
+        }
+    }
+
+    function showConfirmPassword (){
+        if (inputConfirmPassword.getAttribute('type') === 'password'){
+            inputConfirmPassword.setAttribute('type', 'text');
+        } else{
+            inputConfirmPassword.setAttribute('type', 'password');
+        }
+    }
+
+    function compaireValue (e){
+        e.preventDefault()
+        const span = document.createElement('span');
+        const spanDelete = document.querySelector('span')
+        if (inputPassword.value !== inputConfirmPassword.value){
+            span.innerText = `Нужно ввести одинаковые значения`;
+            span.classList.add('red-text')
+            confirmButton.after(span);
+        } else {
+            spanDelete.remove()
+            alert('You are welcome');
+
+        }
+    }
+</script>
+</body>
+</html>

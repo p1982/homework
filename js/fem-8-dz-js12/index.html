@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Banners</title>
+    <style>
+        .image-to-show {
+            width: 400px;
+            height: 400px;
+        }
+
+        .images-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /*.images-wrapper img {*/
+        /*    display: none;*/
+        /*}*/
+
+        /*.images-wrapper img.active {*/
+        /*    display: block;*/
+        /*}*/
+    </style>
+</head>
+
+<body>
+<div class="images-wrapper">
+    <img src="./img/1.jpg" alt="image of game" class="image-to-show" />
+    <img src="./img/2.jpg" alt="image of game" hidden class="image-to-show" />
+    <img src="./img/3.JPG" alt="image of game" hidden class="image-to-show" />
+    <img src="./img/4.png" alt="image of game" hidden class="image-to-show" />
+</div>
+
+<button id="stop">Прекратить</button>
+<button id="resume">Возобновить показ</button>
+<span id="timer">3.000</span>
+
+<script>
+    // Реализовать программу, показывающую циклично разные картинки. Задача должна быть реализована на языке
+    // javascript, без использования фреймворков и сторонник библиотек (типа Jquery).
+    //
+    // #### Технические требования:
+    // - В папке `banners` лежит HTML код и папка с картинками. +
+    // - При запуске программы на экране должна отображаться первая картинка.
+    // - Через 3 секунды вместо нее должна быть показана вторая картинка.
+    // - Еще через 3 секунды - третья.
+    // - Еще через 3 секунды - четвертая.
+    // - После того, как покажутся все картинки - этот цикл должен начаться заново.
+    // - При запуске программы где-то на экране должна появиться кнопка с надписью `Прекратить`.
+    // - По нажатию на кнопку `Прекратить` цикл завершается, на экране остается показанной та картинка,
+    // которая была там при нажатии кнопки.
+    // - Рядом с кнопкой `Прекратить` должна быть кнопка `Возобновить показ`, при нажатии которой цикл
+    // продолжается с той картинки, которая в данный момент показана на экране.
+    // - Разметку можно менять, добавлять нужные классы, id, атрибуты, теги.
+    //
+    // #### Необязательное задание продвинутой сложности:
+    // - При запуске программы на экране должен быть таймер с секундами и миллисекундами, показывающий
+    // сколько осталось до показа следующей картинки.
+    // - Делать скрытие картинки и показывание новой картинки постепенным (анимация fadeOut / fadeIn) в
+    // течение 0.5 секунды.
+
+    //передать в переменную ссылки на все картинки +
+    //передать в переменные ссылки на кнопки +
+    // передать в переменную ссылку на спан с таймером +
+    // задать начальный таймер +
+    // повесить слушатель на кнопку остановки
+    // повесить слушатель на кнопку продолжения
+    // создать функцию таймера
+    // создать функцию переключения картинок
+
+    const imagesWrapper = document.querySelector('.images-wrapper');
+    const btnResume = document.getElementById('resume');
+    const pauseBtn = document.getElementById('stop');
+    const timer = document.getElementById('timer');
+    const timeToNext = 3000;
+
+    btnResume.addEventListener('click', () => {
+        interval = createInterval()
+    })
+    pauseBtn.addEventListener('click', () => clearInterval(interval))
+
+    let leftToNext = timeToNext;
+    let interval = createInterval();
+
+    function createInterval() {
+        return setInterval(() => {
+            leftToNext -= 10;
+            if (leftToNext <= 0) {
+                leftToNext = timeToNext;
+                goToNextImg();
+            }
+            timer.textContent = (leftToNext / 1000).toFixed(3);
+        }, 10)
+    }
+
+    let curImgIndex = 0;
+    function goToNextImg() {
+        imagesWrapper.children[curImgIndex].hidden = true;
+        curImgIndex++;
+        if (curImgIndex === imagesWrapper.children.length) {
+            curImgIndex = 0;
+        }
+        imagesWrapper.children[curImgIndex].hidden = false;
+    }
+</script>
+</body>
+
+</html>

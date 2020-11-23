@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // Реализовать функцию полного клонирования объекта. Задача должна быть реализована на языке javascript,
+    //     без использования фреймворков и сторонник библиотек (типа Jquery).
+    //
+    // #### Технические требования:
+    //     - Написать функцию для рекурсивного полного клонирования объекта (без единой передачи по ссылке,
+    //     внутренняя вложенность свойств объекта может быть достаточно большой).
+    // - Функция должна успешно копировать свойства в виде объектов и массивов на любом уровне вложенности.
+    // - В коде нельзя использовать встроенные механизмы клонирования, такие как функция `Object.assign()`
+    // или спред-оператор.
+
+   const objectForClone = {
+        a: {
+            1: 'a1',
+            2: 'a2',
+            3: 'a3',
+        },
+        b: {
+            1: 'b1',
+            2: 'b2',
+            3: 'b3',
+        },
+        c: {
+            1: 'c1',
+            2: 'c2',
+            3: 'c3',
+        },
+    };
+
+    function cloneObj(obj){
+        let copiedObj = {}
+        for (let key in obj){
+            // console.log('key', obj[key])
+            if (typeof obj[key] === 'object'){
+                copiedObj[key] = cloneObj(obj[key]);
+            } else {
+                // console.log(key)
+                copiedObj[key] = obj[key]
+            }
+        }
+        return copiedObj
+    }
+    let clone = cloneObj(objectForClone)
+    // console.log(cloneObj(objectForClone))
+
+    clone.c['3'] = 'x'
+    console.log(objectForClone)
+
+</script>
+</body>
+</html>

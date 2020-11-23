@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Слайдер для сайта на CSS и JavaScript</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+<div id="block-for-slider">
+    <div id="slider" class="slider">
+        <div class="btn-wrapper left">
+            <div id="prev-button" class="arrow">
+                <button id="prev-btn" class="btn"><span class="span">&#60;</span></button>
+            </div>
+        </div>
+        <ul id="slide-wrapper" class="slide-wrapper">
+            <li class="slide"><img src="./img/1.jpg" alt="1" class="slide-img"></li>
+            <li class="slide hidden"><img src="./img/2.jpg" alt="1" class="slide-img"></li>
+            <li class="slide hidden"><img src="./img/3.JPG" alt="1" class="slide-img"></li>
+            <li class="slide hidden"><img src="./img/4.jpg" alt="1" class="slide-img"></li>
+            <li class="slide hidden"><img src="./img/5.png" alt="1" class="slide-img"></li>
+            <li class="slide hidden"><img src="./img/6.jpg" alt="1" class="slide-img"></li>
+        </ul>
+        <div class="btn-wrapper right">
+            <div id="next-button" class="arrow">
+                <button id="next-btn" class="btn"><span class="span">&#62;</span></button>
+            </div>
+        </div>
+
+
+        <ul id="nav-btns" class="nav-btns">
+            <li class="slide-nav-btn active"></li>
+            <li class="slide-nav-btn"></li>
+            <li class="slide-nav-btn"></li>
+            <li class="slide-nav-btn"></li>
+            <li class="slide-nav-btn"></li>
+            <li class="slide-nav-btn"></li>
+        </ul>
+    </div>
+</div>
+<script>
+    const nextBtn = document.getElementById("next-btn");
+    const previousBtn = document.getElementById("prev-btn");
+    const imgBtn = [...document.querySelectorAll(".slide-nav-btn")];
+    const slides = [...document.querySelectorAll(".slide")];
+    let currentSlide = 0;
+    nextBtn.addEventListener("click", goNextSlide);
+    previousBtn.addEventListener("click", goPreviousSlide);
+    imgBtn.forEach(elem => elem.addEventListener("click", toggleSlide));
+    slides.forEach(elem => elem.addEventListener('mouseenter', stopSlider));
+    slides.forEach(elem => elem.addEventListener('mouseleave', goOnSlider))
+
+    let interval = setInterval(goNextSlide, 2000);
+
+    function stopSlider(){
+        clearInterval(interval)
+    }
+
+    function goOnSlider(){
+        interval = setInterval(goNextSlide, 2000);
+    }
+
+    function goNextSlide() {
+        if (currentSlide >= slides.length-1){
+            currentSlide = 0;
+        } else{
+            currentSlide++
+        }
+        showSlide();
+        slideUp();
+        // stopSlider()
+    }
+
+    function goPreviousSlide() {
+        if (currentSlide === 0){
+            currentSlide = 3;
+        } else{
+            currentSlide--
+        }
+        showSlide();
+        slideUp();
+        // stopSlider()
+    }
+
+    function toggleSlide(e) {
+        e.target.closest("ul").querySelector(".active").classList.remove("active");
+        e.target.closest("li").classList.add("active");
+        currentSlide = imgBtn.findIndex(elem => elem.classList.contains("active"));
+        showSlide()
+    }
+
+    function showSlide() {
+        slides.forEach(elem => elem.classList.add("hidden"));
+        slides[currentSlide].classList.remove("hidden");
+    }
+
+    function slideUp() {
+        document.querySelector(".slide-nav-btn.active").classList.remove('active');
+        imgBtn[currentSlide].classList.add('active');
+    }
+
+</script>
+</body>
+</html>

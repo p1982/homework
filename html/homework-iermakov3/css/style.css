@@ -1,0 +1,196 @@
+/*MAIN STYLE*/
+.image-wrapper {
+    background-image: url("../img/background.png");
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    background-size: cover;
+}
+
+.container {
+    width: 1064px;
+    margin: 0 auto;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/*HEADER*/
+.logo-link {
+    text-decoration: none;
+    float: left;
+    padding-top: 49px;
+    padding-bottom: 48px;
+}
+
+.logo-link:hover .header-logo-img {
+    background-image: url("../img/logo-hover.png");
+}
+
+.header-logo-img {
+    display: inline-block;
+    background-image: url("../img/logo.png");
+    width: 46px;
+    height: 44px;
+}
+
+.logo-link:hover .logo-title {
+    color: #f26522;
+}
+
+.logo-link:hover .logo-subtitle {
+    color: #f26522;
+}
+
+.logo-title {
+    font-size: 29px;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: inline-block;
+    padding-left: 15px;
+}
+
+.logo-subtitle {
+    text-decoration: none;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 18px;
+    display: block;
+}
+
+.contact-us {
+    float: right;
+    padding-top: 57px;
+    padding-bottom: 48px;
+}
+
+.contact-email {
+    text-decoration: none;
+    font-size: 18px;
+    color: #ffffff;
+    display: block;
+    padding-bottom: 5px;
+}
+
+.contact-phone {
+    text-decoration: none;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+/*MAIN-CONTENT*/
+.tour-list {
+    float: left;
+    margin-right: 69px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tour-list:nth-child(3n+3) {
+        margin-right: 0;
+}
+
+.tour-list:hover .tour-hover{
+    bottom: -2px;
+}
+
+.tour-list-link {
+    text-decoration: none;
+}
+
+.tour-list-link:hover .tour-name {
+    color: #f26522;
+}
+
+.shopping-tour {
+    background-image: url("../img/Shopping-Tours.png");
+}
+
+.tour-link-hover{
+    width: 305px;
+    height: 198px;
+    border: solid 1px;
+    border-image: linear-gradient(to bottom, #FFFFFF, #000000) 1 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.tour-link-hover:hover{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.tour-name {
+    color: #ffffff;
+    font-size: 18px;
+    padding-top: 22px;
+    text-align: center;
+}
+
+.tour-hover{
+    text-decoration: none;
+    color: #FFFFFF;
+    width: 307px;
+    height: 63px;
+    background: #f26522;
+    position: absolute;
+    bottom: -63px;
+    transition: 0.7s;
+}
+
+.tour-span-text{
+    display: block;
+    font-size: 10px;
+    padding-top: 16px;
+    padding-left: 21px;
+    opacity: 0.5;
+}
+
+.tour-hover-span{
+    font-size: 20px;
+    padding-left: 21px;
+    opacity: 0.5;
+}
+
+.main-detail {
+    float: right;
+    font-size: 14px;
+    padding-right: 25px;
+    opacity: 0.5;
+}
+
+.main-detail::after {
+    content: "\203a";
+    padding-left: 15px;
+}
+
+.sightseeing-tours {
+    background-image: url("../img/Sightseeing-Tours.png");
+}
+
+.food-tours {
+    background-image: url("../img/Food-Tours.png");
+}
+
+.bars-nightlife {
+    background-image: url("../img/Bars&Nightlife.png");
+}
+
+.art-architecture {
+    background-image: url("../img/Art&Architecture.png");
+}
+
+.walking-tours {
+    background-image: url("../img/Walking-Tours.png");
+}
+
+/*FOOTER*/
+.footer-text {
+    text-align: center;
+    color: #ffffff;
+    font-size: 12px;
+}

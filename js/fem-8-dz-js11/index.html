@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homework-buttons</title>
+    <style>
+        .btn-wrapper{
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .btn{
+            border: none;
+            border-radius: 20px;
+            min-width: 120px;
+            padding: 7px;
+            color: #fff;
+            font-size: 14px;
+            background-color: #000000;
+            cursor: pointer;
+        }
+        .btn:active,
+        .btn:focus{
+            outline: none;
+        }
+
+        .background-blue{
+            background: blue;
+        }
+    </style>
+</head>
+<body>
+<div class="btn-wrapper">
+    <button class="btn">Enter</button>
+    <button class="btn">S</button>
+    <button class="btn">E</button>
+    <button class="btn">O</button>
+    <button class="btn">N</button>
+    <button class="btn">L</button>
+    <button class="btn">Z</button>
+</div>
+    <script>
+        // Реализовать функцию подсветки нажимаемых клавиш. Задача должна быть реализована на языке javascript,
+        // без использования фреймворков и сторонник библиотек (типа Jquery).
+        //
+        // #### Технические требования:
+        // - В файле `index.html` лежит разметка для кнопок.
+        // - Каждая кнопка содержит в себе название клавиши на клавиатуре
+        // - По нажатию указанных клавиш - та кнопка, на которой написана эта буква, должна окрашиваться в синий цвет.
+        // При этом, если какая-то другая буква уже ранее была окрашена в синий цвет - она становится черной. Например
+        // по нажатию `Enter` первая кнопка окрашивается в синий цвет. Далее, пользователь нажимает `S`, и кнопка
+        // `S` окрашивается в синий цвет, а кнопка `Enter` опять становится черной.
+        //
+        //     #### Литература:
+        // -  [Клавиатура: keyup, keydown, keypress](https://learn.javascript.ru/keyboard-events )
+
+        // получить в переменную бтн-враппер - квериСелектор +
+        // получить в переменную массив кнопок +
+        // повесить обработчик события кейПресс +
+        // создать функцию +
+        // перебирать кнопки фор ич и сравнивать иннерТекст кнопки с ивент кей +
+        // если класс есть у всех удаляем
+        // если совпадает добавлем класс с окрашиванием в синий
+        //
+
+        const btns = document.querySelectorAll('.btn');
+        document.body.addEventListener('keypress', buttonPressHandler)
+
+        function buttonPressHandler (e){
+            btns.forEach((item) => {
+                if(item.classList.contains('background-blue')){
+                    item.classList.remove('background-blue')
+                }
+                if(item.innerText.toLocaleLowerCase() === e.key.toLocaleLowerCase()){
+                    item.classList.add('background-blue')
+                }
+            })
+        }
+
+
+                //
+        // const btnWrapper = document.querySelector('.btn-wrapper');
+        // const btns = [...document.querySelectorAll('.btn')]
+        // btnWrapper.addEventListener('keypress', buttonPressHandler)
+        //
+        // function buttonPressHandler(e){
+        //     btns.forEach(item => {
+        //         if (item.classList.contains('background-blue')){
+        //             item.classList.remove('background-blue')
+        //         }
+        //         if (item.innerText === e.key) {
+        //             item.classList.add('background-blue');
+        //         }
+        //     })
+        // }
+
+
+    </script>
+
+</body>
+</html>

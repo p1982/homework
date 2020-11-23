@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Реализовать функцию, которая позволит оценить, успеет ли команда разработчиков сдать проект до наступления
+        // дедлайна. Задача должна быть реализована на языке javascript, без использования фреймворков и сторонник
+        // библиотек (типа Jquery).
+        //
+        // #### Технические требования:
+        //     - Функция на вход принимает три параметра:
+        //     - массив из чисел, который представляет скорость работы разных членов команды. Количество элементов
+        // в массиве означает количество человек в команде. Каждый элемент означает сколько стори поинтов (условная
+        // оценка сложности выполнения задачи) может выполнить данный разработчик за 1 день.
+        // - массив из чисел, который представляет собой беклог (список всех задач, которые необходимо выполнить).
+        // Количество элементов в массиве означает количество задач в беклоге. Каждое число в массиве означает
+        // количество стори поинтов, необходимых для выполнения данной задачи.
+        // - дата дедлайна (объект типа Date).
+        // - После выполнения, функция должна посчитать, успеет ли команда разработчиков выполнить все задачи из
+        // беклога до наступления дедлайна (работа ведется начиная с сегодняшнего дня). Если да, вывести на экран
+        // сообщение: `Все задачи будут успешно выполнены за ? дней до наступления дедлайна!`. Подставить нужное число
+        // дней в текст. Если нет, вывести сообщение `Команде разработчиков придется потратить дополнительно ? часов
+        // после дедлайна, чтобы выполнить все задачи в беклоге`
+        // - Работа идет по 8 часов в день по будним дням
+        //
+        const storyPoint = [5, 6, 4, 7, 3];
+        const backLog = [200, 159, 81, 264, 153]
+        const date = new Date ('november.12.2020')
+        const today = new Date();
+
+        function reduceNumbers (numbers){
+            return numbers.reduce((accumulator, current) => accumulator + current)
+        }
+
+        function countDays(){
+            let day = 0;
+            let startDay = today.getDay()
+            switch (startDay){
+                case 0:
+                    day = -1;
+                    break;
+                case 1:
+                    day = 0;
+                    break;
+                case 2:
+                    day = -6;
+                    break;
+                case 3:
+                    day = -5;
+                    break;
+                case 4:
+                    day = -4;
+                    break;
+                case 5:
+                    day = -3;
+                    break;
+                case 6:
+                    day = -2;
+                    break;
+            }
+            return day
+        }
+
+        function getDedLine (points, logs, date){
+            //Считаем сколько команда сделает стори поинтов в день
+            let sumPointsADay = reduceNumbers(points);
+            
+            //Считаем сколько всего стори поинтов
+            let sumOfStoryPoint = reduceNumbers(logs)
+
+            //Считаем количество дней необходимых чтобы сделать работу
+            let sumOfDaysToDoAllWork = Math.ceil(sumOfStoryPoint / sumPointsADay);
+            console.log(sumOfDaysToDoAllWork)
+
+            // считаем количество дней до дедлайна
+            let daysForDeadLine = Math.round((date - today) / 1000 / 60 / 60 / 24)+1;
+            // console.log(daysForDeadLine)
+
+            // Считаем рабочие дни на выполнение
+            let dayOfStartWeek = countDays();
+            let dayOfEndWeek = date.getDay();
+            let daysToDeadLineWithoutWeekend = (daysForDeadLine + dayOfStartWeek - dayOfEndWeek)/7*5 +
+                (dayOfEndWeek - dayOfStartWeek-2)
+            console.log(daysToDeadLineWithoutWeekend)
+
+            if (sumOfDaysToDoAllWork < daysToDeadLineWithoutWeekend){
+                let daysStayForDedLine = daysToDeadLineWithoutWeekend - sumOfDaysToDoAllWork;
+                alert(`Все задачи будут успешно выполнены за ${daysStayForDedLine} дней до наступления дедлайна!`)
+            } else {
+                let hoursAfterDedLine = (sumOfDaysToDoAllWork - daysToDeadLineWithoutWeekend) * 8
+                alert(`Команде разработчиков придется потратить дополнительно ${hoursAfterDedLine} часов
+                после дедлайна, чтобы выполнить все задачи в беклоге`)
+            }
+        }
+        getDedLine(storyPoint, backLog, date)
+
+
+
+    </script>
+</body>
+</html>

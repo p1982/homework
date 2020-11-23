@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="box">
+    <div class="display">
+        <input type="text" id="display" readonly size="18" value="0" disabled>
+    </div>
+    <div class="keys">
+        <p>
+            <input type="button" class="button gray operation" value="mrc">
+            <input type="button" class="button gray operation" value="m-">
+            <input type="button" class="button gray operation" value="m+">
+            <input type="button" class="button pink operation" value="/">
+        </p>
+        <p>
+            <input type="button" class="button black number" value="7">
+            <input type="button" class="button black number" value="8">
+            <input type="button" class="button black number" value="9">
+            <input type="button" class="button pink operation" value="*">
+        </p>
+        <p>
+            <input type="button" class="button black number" value="4">
+            <input type="button" class="button black number" value="5">
+            <input type="button" class="button black number" value="6">
+            <input type="button" class="button pink operation" value="-">
+        </p>
+        <p>
+            <input type="button" class="button black number" value="1">
+            <input type="button" class="button black number" value="2">
+            <input type="button" class="button black number" value="3">
+            <input type="button" class="button pink operation" value="+">
+        </p>
+        <p>
+            <input type="button" class="button black number" value="0">
+            <input type="button" class="button black" id="decimal" value=".">
+            <input type="button" class="button black" id='clear' value="C">
+            <input type="button" class="button orange operation" id='equally' value="=">
+        </p>
+    </div>
+</div>
+<script>
+
+    // Сделать Javascript калькулятор, используя готовую [верстку](calculator.zip). Задача должна быть реализована
+    // на языке javascript, без использования фреймворков и сторонник библиотек (типа Jquery).
+    //
+    // #### Технические требования:
+    //     - В архиве дана верстка макета калькулятора. Необходимо сделать этот калькулятор рабочим. +
+    // - При клике на клавиши с цифрами - набор введенных цифр должен быть показан на табло калькулятора. +
+    // - При клике на знаки операторов (`*`, `/`, `+`, `-`) на табло ничего не происходит - программа ждет +
+    // введения второго числа для выполнения операции. +
+    // - Если пользователь ввел одно число, выбрал оператор, и ввел второе число, то при нажатии как кнопки `=`, +
+    // так и любого из операторов, в табло должен появиться результат выполенния предыдущего выражения.
+    // - При нажатии клавиш `M+` или `M-` в левой части табло необходимо показать маленькую букву `m` -
+    // это значит, что в памяти хранится число. Нажатие на `MRC` покажет число из памяти на экране.
+    // Повторное нажатие `MRC` должно очищать память.
+    //
+    //     #### Необязательное задание продвинутой сложности:
+    //     - Все клавиши калькулятора должны также нажиматься с клавиатуры. Нажатие `Enter` будет развнозначно нажатию `=`
+
+    const numbersBtn = document.querySelectorAll('.number');
+    const operationsBtn = document.querySelectorAll('.operation');
+    const decimalBtn = document.getElementById('decimal');
+    const clearBtn = document.getElementById('clear');
+    const display = document.getElementById('display');
+    let currentNum = 0;
+    let newNumber = false;
+    let pendingOperation = '';
+    let memory = 0;
+    let mrcClicked = false;
+    let displayContainer = document.querySelector('.display');
+
+    for (let i = 0; i < numbersBtn.length; i++) {
+        let number = numbersBtn[i]
+        number.addEventListener('click', function (e) {
+            numberPress(e.target.value)
+        })
+    }
+    window.addEventListener('keydown', function (e) {
+        if ([...numbersBtn].some((elem) => {
+            return elem.value === e.key
+        })) {
+            numberPress(e.key)
+        } else if ([...operationsBtn].some((elem) => {
+            return elem.value === e.key
+        })) {
+            doOperation(e.key)
+        } else if (e.key === 'Enter') {
+            doOperation('=')
+        } else if (e.key === '.'){
+            decimal()
+        } else if (e.key === 'Delete' || e.key === 'Backspace'){
+            clear()
+        }
+    })
+
+    for (let i = 0; i < operationsBtn.length; i++) {
+        let operation = operationsBtn[i]
+        operation.addEventListener('click', function (e) {
+            doOperation(e.target.value)
+        });
+    }
+
+    decimalBtn.addEventListener('click', decimal);
+    clearBtn.addEventListener('click', clear);
+    // decimalBtn.addEventListener('keypress', decimal);
+    // clearBtn.addEventListener('keypress', clear);
+
+    function numberPress(num) {
+        if (newNumber) {
+            display.value = num;
+            newNumber = false;
+        } else {
+            if (display.value === '0') {
+                display.value = num;
+            } else {
+                display.value += num
+            }
+        }
+    }
+
+    function doOperation(symbol) {
+        let localOperationMemory = display.value;
+        let span = document.createElement('span');
+
+        if (newNumber && pendingOperation !== '=') {
+            display.value = currentNum;
+        } else {
+            newNumber = true;
+            if (pendingOperation === '+') {
+                currentNum = Number(currentNum) + Number(localOperationMemory)
+            } else if (pendingOperation === '-') {
+                currentNum = Number(currentNum) - Number(localOperationMemory)
+            } else if (pendingOperation === '*') {
+                currentNum = Number(currentNum) * Number(localOperationMemory)
+            } else if (pendingOperation === '/') {
+                currentNum = Number(currentNum) / Number(localOperationMemory)
+            } else {
+                currentNum = localOperationMemory
+            }
+        }
+
+        if (symbol === 'm+' || symbol === 'm-') {
+            span.innerText = 'm';
+            span.classList.add('span-on-input');
+            displayContainer.appendChild(span);
+            memory = currentNum;
+        } else if (symbol === 'mrc') {
+            if (!mrcClicked) {
+                currentNum = memory
+                mrcClicked = true;
+            } else {
+                let spanToDelete = document.querySelector('span')
+                spanToDelete.remove()
+                memory = 0;
+                currentNum = 0;
+                mrcClicked = false;
+            }
+        }
+        display.value = currentNum;
+        pendingOperation = symbol;
+    }
+
+    function decimal() {
+        let localDecimalMemory = display.value;
+        if (newNumber) {
+            localDecimalMemory = '0.'
+            newNumber = false
+        } else {
+            if (localDecimalMemory.indexOf('.') === -1) {
+                localDecimalMemory += '.'
+            }
+        }
+        display.value = localDecimalMemory
+    }
+
+    function clear() {
+        display.value = 0;
+        newNumber = true;
+        currentNum = 0;
+        pendingOperation = '';
+    }
+</script>
+</body>
+</html>

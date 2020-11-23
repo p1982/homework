@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let num1 = +prompt('enter number');
+    let num2 = +prompt('enter second number');
+    let operation = prompt('operation what we have to do');
+
+    while (isNaN(num1) || num1 === '') {
+        num1 = +prompt('enter number', num1);
+    }
+
+    while (isNaN(num2) || num2 === '') {
+        num2 = +prompt('enter second number', num2);
+    }
+    // do {
+    //     num1 = prompt('enter number', ${num1})
+    //     num2 = prompt('enter second number', ${num2})
+    // } while (isNaN(num1) || num1 === '' && isNaN(num2) || num2 === '');
+
+    // function calc (number1, number2, operation){
+    //     let result = 0;
+    //     if (operation === '+'){
+    //         result = number1 + number2;
+    //     } else if (operation === '-'){
+    //         result = number1 - number2;
+    //     } else if (operation === '*'){
+    //         result = number1 * number2;
+    //     } else if (operation === '/'){
+    //         result = number1 / number2;
+    //     }
+    //     return result
+    // }
+
+    function calc(number1, number2, operation) {
+        switch
+            (operation) {
+            case'*':
+                return number1 * number2;
+            case '+':
+                return number1 + number2;
+            case '-':
+                return number1 - number2;
+            case '/':
+                return number1 / number2;
+        }
+    }
+
+    console.log(calc(num1, num2, operation))
+</script>
+</body>
+</html>

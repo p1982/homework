@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // Реализовать функцию для создания объекта "пользователь".
+    // #### Технические требования:
+    //     - Написать функцию `createNewUser()`, которая будет создавать и возвращать объект `newUser`.
+    // - При вызове функция должна спросить у вызывающего имя и фамилию.
+    // - Используя данные, введенные пользователем, создать объект `newUser` со свойствами `firstName` и `lastName`.
+    // - Добавить в объект `newUser` метод `getLogin()`,
+    //     который будет возвращать первую букву имени пользователя, соединенную с фамилией пользователя, все
+    // в нижнем регистре (например, `Ivan Kravchenko → ikravchenko`).
+    // - Создать пользователя с помощью функции `createNewUser()`.
+    //     Вызвать у пользователя функцию `getLogin()`. Вывести в консоль результат выполнения функции.
+    //
+    //     #### Необязательное задание продвинутой сложности:
+    //     - Сделать так, чтобы свойства `firstName` и `lastName` нельзя было изменять напрямую.
+    //     Создать функции-сеттеры `setFirstName()` и `setLastName()`, которые позволят изменить данные свойства.
+
+    // function createNewUser() {
+    //     const firstName = prompt("Введите имя");
+    //     const lastName = prompt("Введите фамилию");
+    //     return {
+    //         firstName,
+    //         lastName,
+    //         getLogin() {
+    //             return (this.firstName[0] + this.lastName).toLowerCase();
+    //         }
+    //     }
+    // }
+    // const newUser = createNewUser();
+    // console.log(newUser.getLogin());
+
+    // Необязательное задание продвинутой сложности
+    function createNewUser() {
+        const firstName = prompt("Введите имя");
+        const lastName = prompt("Введите фамилию");
+        const newUser = {
+            firstName,
+            lastName,
+            getLogin() {
+                return (this.firstName[0] + this.lastName).toLowerCase();
+            }
+        };
+        Object.defineProperty(newUser, 'firstName', {
+            writable: false,
+            configurable: true,
+        });
+        newUser.setFirstName = function (firstName) {
+            Object.defineProperty(this, 'firstName', {value: firstName});
+        };
+        Object.defineProperty(newUser, 'lastName', {
+            writable: false,
+            configurable: true,
+        });
+        newUser.setLastName = function (lastName) {
+            Object.defineProperty(this, 'lastName', {value: lastName});
+        };
+        return newUser;
+    }
+    const user = createNewUser();
+    console.log(user);
+    // user.setFirstName('Ivan');
+    // user.setLastName('Petrov');
+
+</script>
+</body>
+</html>

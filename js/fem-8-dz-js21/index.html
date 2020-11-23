@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<style>
+    .row{
+        display: flex;
+        /*margin: 10px;*/
+    }
+
+    .cell{
+        margin: 10px;
+    }
+
+    .row .active{
+        background: red;
+        border: none;
+        border-radius: 50%;
+        /*height: 15px;*/
+        /*width: 15px;*/
+    }
+</style>
+</head>
+<body>
+<button class="circle" id="btn">Нарисовать круг</button>
+<!--<div class="active"></div>-->
+    <script>
+        // Нарисовать на странице круг используя параметры, которые введет пользователь.
+        // Задача должна быть реализована на языке javascript, без использования фреймворков и сторонник библиотек (типа Jquery).
+        //
+        // #### Технические требования:
+        // - При загрузке страницы - показать на ней кнопку с текстом "Нарисовать круг".  +
+        // Данная кнопка должна являться единственным контентом в теле HTML документа,  +
+        // весь остальной контент должен быть создан и добавлен на страницу с помощью Javascript.
+        // - При нажатии на кнопку "Нарисовать круг" показывать одно поле ввода - диаметр круга. +
+        // При нажатии на кнопку "Нарисовать" создать на странице 100 кругов (10*10) случайного цвета. +
+        // При клике на конкретный круг - этот круг должен исчезать, при этом пустое место заполняться,
+        // то есть все остальные круги сдвигаются влево.
+        // - У вас может возникнуть желание поставить обработчик события на каждый круг для его исчезновения.
+        // Это неэффективно, так делать не нужно. На всю страницу должен быть только один обработчик событий,
+        // который будет это делать.
+
+        // Создать кнопку с ай-ди
+        // создать цсс стили для кругов
+        //передать в переменную кнопку
+        //повесить слушатель на кнопку
+        //запросить диаметр круга у пользователя
+        // передать в цикл размер ??????
+        //создать див-враппер
+        // циклом создать строки
+        // вторым циклом создать ячейки - имеем форму 10*10 кружков
+        //добавить на страницу
+        // достучаться до див враппера
+        // повесить обработчик события на див враппер
+        // делегировать событие на дивы внутри
+        //удалить гружок и подвинить всю цепочку
+
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', createCircle);
+
+
+        function createCircle () {
+            let diameterOfCircle = +prompt("enter circle diameter");
+            const divGrid = document.createElement('div');
+            // divGrid.className = 'grid'
+
+            for (let i = 0; i < 10; i++) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.classList.add('active');
+
+                for (let j = 0; j < 10; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.classList.add('active');
+                    cell.style.height = `${diameterOfCircle}px`;
+                    cell.style.width = `${diameterOfCircle}px`;
+                    row.appendChild(cell)
+                }
+                divGrid.append(row)
+            }
+            document.body.appendChild(divGrid)
+            const div = document.querySelector('div');
+            div.addEventListener('click', removeCircle)
+            function removeCircle(event){
+                event.target.remove()
+            }
+        }
+
+
+
+
+
+
+
+
+            //
+            // const div = document.createElement('div');
+            // // let i = 0;
+            // div.innerText = ' ';
+            // document.body.appendChild(div)
+            //
+            // for (let i = 0; i<10; i++){
+            //     const row = document.createElement('div');
+            //     // row.innerText = ' ';
+            //     row.classList.add('active');
+            //     for (let j = 0; j<10; j++){
+            //         const cell = document.createElement('div');
+            //         // cell.innerText = ' ';
+            //         cell.classList.add('active');
+            //         row.appendChild(cell);
+            //     }
+            //     div.append(row);
+            // }
+            // do {
+            // const p = document.createElement('p');
+            // p.innerText = ' ';
+            // p.classList.add('active');
+            // div.appendChild(p);
+            // i++
+            // } while (i<100)
+
+
+
+            //
+
+    </script>
+</body>
+</html>
