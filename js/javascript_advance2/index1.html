@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // Дан массив books.
+    // ```javascript
+    // const books = [
+    //   {
+    //     author: "Скотт Бэккер",
+    //     name: "Тьма, что приходит прежде",
+    //     price: 70
+    //   },
+    //   {
+    //    author: "Скотт Бэккер",
+    //    name: "Воин-пророк",
+    //   },
+    //   {
+    //     name: "Тысячекратная мысль",
+    //     price: 70
+    //   },
+    //   {
+    //     author: "Скотт Бэккер",
+    //     name: "Нечестивый Консульт",
+    //     price: 70
+    //   },
+    //   {
+    //    author: "Дарья Донцова",
+    //    name: "Детектив на диете",
+    //    price: 40
+    //   },
+    //   {
+    //    author: "Дарья Донцова",
+    //    name: "Дед Снегур и Морозочка",
+    //   }
+    // ];
+    // ```
+    // - Выведите этот массив на экран в виде списка (тег ul - список должен быть сгенерирован с помощью Javascript).
+    // - На странице должен находиться `div` с `id="root"`, куда и нужно будет положить этот список
+    // (похожая задача была дана в модуле basic).
+    // - Перед выводом обьекта на странице, нужно проверить его на корректность
+    // (в объекте должны содержаться все три свойства - author, name, price).
+    // Если какого-то из этих свойств нету, в консоли должна высветиться ошибка с указанием - какого свойства нету в обьекте.
+    // - Те элементы массива, которые являются некорректными по условиям предыдущего пункта, не должны появиться на странице.
+
+    const books = [
+        {
+            author: "Скотт Бэккер",
+            name: "Тьма, что приходит прежде",
+            price: 70
+        },
+        {
+            author: "Скотт Бэккер",
+            name: "Воин-пророк",
+        },
+        {
+            name: "Тысячекратная мысль",
+            price: 70
+        },
+        {
+            author: "Скотт Бэккер",
+            name: "Нечестивый Консульт",
+            price: 70
+        },
+        {
+            author: "Дарья Донцова",
+            name: "Детектив на диете",
+            price: 40
+        },
+        {
+            author: "Дарья Донцова",
+            name: "Дед Снегур и Морозочка",
+        }
+    ];
+
+    // const renderBooks = (books) => {
+    //     books.forEach((book) => {
+    //         const [validationResult, emptyFields] = validateFields(book);
+    //         if (!validationResult) {
+    //             console.log((`No fields: ${emptyFields.join(", ")}`));
+    //         } else {
+    //             createElem(book)
+    //         }
+    //     });
+    // };
+    const renderBooks = (books) => {
+        books.forEach((book) => {
+            const [validationResult, emptyFields] = validateFields(book);
+            try {
+                if (!validationResult) {
+                    throw new Error(`No fields: ${emptyFields.join(", ")}`);
+                } else {
+                    createElem(book)
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        });
+    };
+
+    const validateFields = (book) => {
+        const necessaryFields = ["author", "name", "price"];
+        const bookFields = Object.keys(book);
+        let validationResult = true;
+        let emptyFields = [];
+
+        if (necessaryFields.length !== bookFields.length) {
+            validationResult = false;
+        }
+
+        necessaryFields.forEach((necessaryField) => {
+            const isFieldInBook = bookFields.includes(necessaryField);
+
+            if (!isFieldInBook) {
+                emptyFields.push(necessaryField);
+                validationResult = false;
+            }
+        });
+        return [validationResult, emptyFields];
+    };
+
+    const createElem = function (book) {
+        const div = document.createElement('div');
+        div.id = "root";
+        document.body.appendChild(div)
+
+        for (let key in book) {
+            const ul = document.createElement('ul')
+            const li = document.createElement('li')
+
+            li.innerHTML = book[key];
+            div.appendChild(ul);
+            ul.appendChild(li)
+        }
+    }
+
+    try {
+        renderBooks(books);
+    } catch (error) {
+        console.log(error);
+    }
+
+    //
+    // const books = [
+    //     {
+    //         author: "Скотт Бэккер",
+    //         name: "Тьма, что приходит прежде",
+    //         price: 70
+    //     },
+    //     {
+    //         author: "Скотт Бэккер",
+    //         name: "Воин-пророк",
+    //     },
+    //     {
+    //         name: "Тысячекратная мысль",
+    //         price: 70
+    //     },
+    //     {
+    //         author: "Скотт Бэккер",
+    //         name: "Нечестивый Консульт",
+    //         price: 70
+    //     },
+    //     {
+    //         author: "Дарья Донцова",
+    //         name: "Детектив на диете",
+    //         price: 40
+    //     },
+    //     {
+    //         author: "Дарья Донцова",
+    //         name: "Дед Снегур и Морозочка",
+    //     }
+    // ];
+    // try {
+    //     let ol = document.createElement('ol');
+    //     document.body.appendChild(ol);
+    //
+    //     for (let item of books) {
+    //         let li = document.createElement('li');
+    //         let ul = document.createElement('ul');
+    //
+    //         ol.appendChild(li);
+    //         li.appendChild(ul)
+    //
+    //         for (let key in item) {
+    //             const list = document.createElement('li')
+    //             console.log(item[key])
+    //             list.innerHTML = item[key];
+    //             ul.appendChild(list);
+    //         }
+    //     }
+    // } catch (error) {
+    //     console.error(error)
+    // }
+    //
+    // function checkFields(book){
+    //     let necessaryFields = ['author', 'name', 'price']
+    //     for(let key in book){
+    //         if(){
+    //
+    //         }
+    //     }
+    // }
+</script>
+</body>
+</html>

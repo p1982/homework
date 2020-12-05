@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // 1. Реализовать класс Employee, в котором будут следующие свойства - name (имя), age (возраст), salary (зарплата).
+    // Сделайте так, чтобы эти свойства заполнялись при создании объекта.
+    // 2. Создайте геттеры и сеттеры для этих свойств.
+    // 3. Создайте класс Programmer, который будет наследоваться от класса Employee, и у которого будет свойство
+    // lang (список языков).
+    // 4. Для класса Programmer перезапишите геттер для свойства salary. Пусть он возвращает свойство salary, умноженное на 3.
+    // 5. Создайте несколько экземпляров обьекта Programmer, выведите их в консоль.
+
+
+    class Employee {
+        constructor(name, age, salary) {
+            this._name = name;
+            this._age = age;
+            this._salary = salary
+        }
+
+        get name (){
+            return this._name
+        }
+
+        set name (value){
+            console.log(typeof value)
+            if (typeof value === 'string' && value !== ''){
+                this._name = value
+            } else {
+                console.error ('enter correct name')
+            }
+        }
+
+        get age (){
+            return this._age
+        }
+
+        set age(value){
+            if(value>18){
+                this._age = value
+            } else {
+                console.error ('go to school, baby')
+            }
+        }
+
+        get salary (){
+            return this._salary
+        }
+
+        set salary(value){
+            if(isNaN(value)){
+                this._salary = value
+            } else {
+                console.error ('It is not money')
+            }
+        }
+
+    }
+
+    class Programmer extends Employee {
+        constructor(name, age, salary, lang) {
+            super(name, age, salary);
+            this.lang = lang;
+        }
+
+        get salary (){
+            return this._salary * 3;
+        }
+    }
+
+    const employee = new Employee('Pavlo', '38', '30000')
+    console.log(employee)
+
+    const programmer1 = new Programmer('Sergei', '42', '45000', ['C++', 'Java', 'JavaScript']);
+    const programmer2 = new Programmer('Nikita', 26, 15000, ['HTML', 'CSS', 'JavaScript']);
+    const programmer3 = new Programmer('Inna', 33, 25000, ['HTML', 'CSS', 'JavaScript', 'Java']);
+    console.log(programmer1.salary)
+    console.log(employee.age)
+    console.log(programmer2);
+    console.log(programmer3)
+</script>
+</body>
+</html>
