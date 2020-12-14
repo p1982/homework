@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // - Отправить AJAX запрос по адресу `https://swapi.dev/api/films/` и
+    // получить список всех фильмов серии `Звездные войны` ++++
+    // - Для каждого фильма получить с сервера список персонажей, которые были показаны в данном фильме.
+    // Список персонажей можно получить из свойства `characters`. ++++
+    // - Как только с сервера будет получена информация о фильмах, сразу же вывести список всех фильмов на экран.
+    // Необходимо указать номер эпизода, название фильма, а также короткое содержание
+    // (поля `episode_id`, `title` и `opening_crawl`). ++++
+    // - Как только с сервера будет получена информация о персонажах какого-либо фильма,
+    // вывести эту информацию на экран под названием фильма.
+    // - Пока загружаются персонажи фильма, прокручивать под именем фильма анимацию загрузки.
+    // Анимацию можно использовать любую. Желательно найти вариант на чистом CSS без использования JavaScript.
+    //
+    // const requestURL = 'https://swapi.dev/api/films/'
+    // let xhr = new XMLHttpRequest();
+    //
+    // xhr.open('GET', requestURL)
+    // xhr.responseType = 'json'
+    // xhr.onload = () => {
+    //     let result = xhr.response
+    //     console.log(result)
+    // }
+    //
+    // xhr.send()
+
+    const container = document.createElement('div');
+    const ul = document.createElement('ul');
+
+    document.body.appendChild(container)
+    container.appendChild(ul)
+
+    fetch('https://swapi.dev/api/films/')
+        .then((response) => {
+            return response.json()
+        })
+        .then(films => {
+            films.results.forEach(film => {
+                const id = film.episode_id
+                renderMovie(film, id)
+                getMovieCharacters(film.characters)
+                    .then(charactersList => renderCharacters(charactersList, id))
+            })
+
+        })
+
+    function renderMovie(film, id) {
+        const li = document.createElement('li');
+        const div = document.createElement('div');
+
+        li.id = id;
+        li.innerHTML = `${film.title}`
+
+        ul.appendChild(li)
+
+        div.innerHTML = `${film.episode_id} <br> ${film.opening_crawl}`
+        li.appendChild(div)
+    }
+
+
+    function getMovieCharacters(links) {
+        return new Promise((resolve, reject) => {
+            const characters = [];
+            links.forEach(link => {
+                fetch(link)
+                    .then(response => response.json())
+                    .then(character => {
+                        characters.push(character.name)
+                        if (characters.length === links.length) {
+                            resolve(characters)
+                        }
+                    })
+            })
+        })
+    }
+
+    function renderCharacters(characters, id) {
+        const episode = document.getElementById(id)
+        const episodeInfo = episode.querySelector('div')
+        const charactersList = document.createElement('ul');
+        episodeInfo.insertAdjacentElement('beforebegin', charactersList)
+
+        characters.forEach(character => {
+            const characterItem = document.createElement('li')
+            characterItem.innerHTML = character;
+            charactersList.appendChild(characterItem)
+        })
+    }
+
+</script>
+</body>
+</html>
